@@ -1,9 +1,9 @@
 package node
 
 import (
-	"github.com/cometbft/cometbft/node/querier"
-	sm "github.com/cometbft/cometbft/state"
-	"github.com/cometbft/cometbft/store"
+	"github.com/tendermint/tendermint/node/querier"
+	sm "github.com/tendermint/tendermint/state"
+	"github.com/tendermint/tendermint/store"
 )
 
 func setUpQuerier(blockStore *store.BlockStore, stateStore sm.Store, port string) error {

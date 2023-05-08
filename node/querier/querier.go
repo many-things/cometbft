@@ -7,8 +7,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/cometbft/cometbft/store"
-	sm "github.com/te/cometbft/state"
+	sm "github.com/tendermint/tendermint/state"
+	"github.com/tendermint/tendermint/store"
 	"google.golang.org/grpc"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -100,7 +100,7 @@ func (q *CosmosQuerier) getBlockFromLocal(height int64) (*Block, error) {
 	if tmBlock == nil {
 		return nil, errBlockNotFound
 	}
-	abciResponse, err := q.StateStore.LoadFinalizeBlockResponse(height)
+	abciResponse, err := q.StateStore.LoadABCIResponses(height)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (q *CosmosQuerier) getBlockFromLocal(height int64) (*Block, error) {
 	var txs []*Tx
 
 	for i, tx := range tmBlock.Data.Txs {
-		txr := abciResponse.TxResults[i]
+		txr := abciResponse.DeliverTxs[i]
 		txHash := fmt.Sprintf("%X", tx.Hash())
 		pbTx := Tx{
 			TxHash:    txHash,
